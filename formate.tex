@@ -1,0 +1,106 @@
+\newcommand{\Amen}{\textsc{Amen.}}
+\newcommand{\AAAmen}{\Amen{ }\Amen{ }\Amen}
+
+\definecolor{myred}{rgb}{1,.1,0}
+\definecolor{mygrey}{rgb}{.2,.2,.2}
+
+\ifxetex
+    \usepackage{soul}
+    \newcommand{\titel}[1]{%
+    	\phantomsection %für hyperref -- meckert sonst über addcontentsline
+	\textcolor{myred}{\so{\textsc{#1}}}%
+	\addcontentsline{toc}{section}{#1}
+    }
+    \newcommand{\Titel}[1]{%Titel, der gleichzeitig in die Liedliste geht
+    	\phantomsection %für hyperref -- meckert sonst über addcontentsline
+	\textcolor{myred}{\so{\textsc{#1}}}%
+	\addcontentsline{toc}{section}{#1}
+	\addcontentsline{lof}{figure}{#1}
+    }
+    \newcommand{\sperren}[1]{{\footnotesize\so{#1}}}
+\else
+    \newcommand{\titel}[1]{\textcolor{myred}{\textls[200]{\textsc{#1}}}}
+    \newcommand{\sperren}[1]{{\footnotesize\textls[100]{#1}}}
+\fi
+
+\newcommand{\Liedliste}[1]{%zur Liedliste hinzufügen
+    \addcontentsline{lof}{figure}{#1}
+}
+
+\newcommand{\kreuz}{\maltese\ } % symbol für Kreuz im Text 
+
+\newcommand{\f}[1]{\textbf{#1}}
+
+\newcommand{\trenner}[1]{% Trennerzeichen für verschiedene Optionen
+	\begin{center}
+	    $\blacklozenge$ \emph{#1}%\Diamond$
+	\end{center}
+	}
+
+\newcommand{\doppeltrenner}[1][]{% Trennerzeichen für verschiedene Optionen
+	\begin{center}
+	    $\blacklozenge$ \emph{#1} $\blacklozenge$ %\Diamond$
+	\end{center}
+	}
+
+\newcommand{\lit}[1]{% Liturg
+	{\textsc{Liturg:}} #1
+}
+
+\newcommand{\gem}[1]{% gemeinsam
+    \begin{addmargin}[1.5em]{.5em} #1 \end{addmargin}
+}
+
+\renewcommand{\Gem}[1]{% Gemeinde renew wegen myTeX
+    {\footnotesize\begin{addmargin}[1.5em]{.5em}\emph{Gemeinde: }#1 \end{addmargin}}
+}
+
+\newcommand{\Antwort}[1]{% Antwort
+    {\footnotesize\begin{addmargin}[1.5em]{.5em}\emph{Antwort: }#1 \end{addmargin}}
+}
+
+
+%braucht xparse!
+\usepackage{xstring,xifthen}
+%\Lied[<++Verse++>][<++Titel++>][<++Liederbuch++>]{<++Nummer++>}
+\DeclareDocumentCommand \Lied { O{} O{} O{EG} m }{%Lied
+\begin{addmargin}[1.5em]{.5em}%
+    \StrLen{#1}[\VersLen]%
+    \StrLen{#2}[\TitelLen]%
+    \ifthenelse{\VersLen = 0}{% Kein Vers angegeben
+    	\phantomsection
+	\citetitle{#3:#4} \hfill{} (#3~#4)%,#1)%
+	\addcontentsline{toc}{subsection}{#3~#4}%
+	\addcontentsline{lof}{figure}{#3~#4}%
+    }{%else
+    \ifthenelse{\TitelLen = 0}{% Kein Titel angegeben
+    	\phantomsection
+	\citetitle{#3:#4} \hfill{} (#3~#4,#1)%
+	\addcontentsline{toc}{subsection}{#3~#4,#1}%
+	\addcontentsline{lof}{figure}{#3~#4,#1}%
+    }{%else
+    	\phantomsection
+	#2 \hfill{} (#3~#4,#1)%
+	\addcontentsline{toc}{subsection}{#2 -- #3~#4,#1}%
+	\addcontentsline{lof}{figure}{#3~#4,#1}%
+    }}
+\end{addmargin}
+}
+
+\newcommand{\Regie}[1]{%
+    	\phantomsection
+	{\footnotesize \emph{#1}}
+	\addcontentsline{toc}{subsection}{#1}
+}
+
+\makeatletter %Setzt den Pagestyle auf den ersten Seiten eines Chapters neu, damit auch dort fwlw angewandt wird.
+\renewcommand\chapter{\if@openright\cleardoublepage\else\clearpage\fi
+                    \thispagestyle{scrheadings}% original style: plain
+                    \secdef\@chapter\@schapter}
+\makeatother
+
+\renewcaptionname{german}{\listfigurename}{Liedliste}
+
+\newcommand{\Jünger}{\gender{Jüngerinnen()Jünger}}
+\newcommand{\Jüngern}{\gender{Jüngerinnen()Jüngern}}
+\newcommand{\Christen}{\gender{Christinnen()Christen}}

@@ -1,0 +1,65 @@
+%Diese Datei liegt in ~/texmf/tex/latex/myTeX/ und wird verlinkt, ja?!
+\usepackage{ifxetex}
+
+\ifxetex 
+    \usepackage{xltxtra}
+
+    \usepackage{polyglossia}
+    \setdefaultlanguage[%
+	latesthyphen=true,
+	babelshorthands=true]
+    {german}
+    \setotherlanguage{latin}
+    \setotherlanguage[variant=uk]{english}
+    \setotherlanguage[variant=ancient]{greek}
+
+    \usepackage{microtype}
+\else
+    \usepackage[utf8]{inputenc}		% Kodierung der Eingabe: utf8 um Sonderzeichen wie Umlaute direkt eingeben zu können
+    \usepackage[T1]{fontenc}		% Trennung von Wörtern mit Umlauten
+    \usepackage{hyphsubst}% Trennregeln austauschen
+    \HyphSubstLet{ngerman}{ngerman-x-latest}
+    \usepackage[			%Sprachunterstützung -- letzte als "Standard"
+	%ibycus,			% griechische
+	latin,				% Was es alles gibt\ldots
+%	french,
+	english,
+	ngerman				% deutsche
+    ]{babel}
+    \usepackage[tracking=true]{microtype}%
+    \DeclareMicrotypeSet*[tracking]{my}% 
+      { font = */*/*/sc/* }% 
+    \SetTracking{ encoding = *, shape = sc }{ 45 }% Hier wird festgelegt, dass alle Passagen in Kapitälchen automatisch leicht gesperrt werden.
+\fi
+
+\usepackage{libertine}			%Schriftart auf Libertine
+\usepackage{amssymb}			%Symbole wie \Diamond
+
+
+\usepackage{csquotes}			% Anführungszeichen (von BibLaTeX benötigt)
+\usepackage{setspace}			% Zur einfachen Nutzung eines 3/2 Zeilenabstands
+\usepackage{paralist}			% itemize Kompakter mit compactitem
+\usepackage{multicol}			% Multicol
+
+\usepackage[comma=chvsep]{bibleref-parse}		% Bibleref zur Zitierung von Bibelbüchern
+\usepackage{bibleref-german}
+\biblerefstyle{Lutherbibel} %oder TRE, RGG oder LThK laden
+\biblerefformat{kurz} %lang, Terminus (ausgeschrieben)
+
+\ifxetex
+\PassOptionsToPackage{xetex}{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\usepackage{color}
+
+\usepackage{hyperref}			% hyperref für anklickbare Links in pdf. CAVEAT: wird nur ausgeführt wenn final=true!
+\hypersetup{				% Einstellungen von hyperref
+	colorlinks=true,
+	linkcolor=black,
+	citecolor=black,
+	filecolor=black,
+	urlcolor=black,
+	pdfauthor=Steffen Banhardt
+}
+

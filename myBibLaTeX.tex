@@ -1,0 +1,20 @@
+%Anpassungen für BibLaTeX---------------------------------
+%siehe /usr/share/texmf/tex/latex/biblatex-dw
+\makeatletter
+\AtBeginDocument{\@ifpackageloaded{bibtex}%
+{%
+\DeclareFieldFormat{title}{\mkbibemph{#1}\isdot}
+\DeclareFieldFormat[article]{title}{\mkbibquote{#1}} 
+\DeclareFieldFormat[incollection]{title}{\mkbibquote{#1}} 
+% Bezeichnungen "f" und "ff" ohne Abkürzungspunkt
+\DefineBibliographyStrings{ngerman}{sequens={f},sequentes={ff}}
+% Abstand vor "f" und "ff"
+\renewcommand*{\sqspace}{\addnbthinspace}
+% Abstände vor Seiten-/Spaltenzahl
+\renewcommand*{\ppspace}{\addnbthinspace}
+\DeclareFieldFormat{url}{\mkbiburl{#1}}
+}
+{\relax}
+}%
+\makeatother
+%---------------------------------------- 

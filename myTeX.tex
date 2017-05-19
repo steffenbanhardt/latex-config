@@ -1,0 +1,145 @@
+%Diese Datei liegt in ~/texmf/tex/latex/myTeX/ und wird verlinkt, ja?!
+\usepackage{xstring, xifthen, refcount}
+
+%Abkürzungen mit Punkten versehen.
+%Kontrolliert nur auf 2 und 3! Ansonsten wird fett gedruckt!
+\newcommand{\abk}[1]{%
+    \StrLen{#1}[\MyStrLen]%kann nicht in ifthenelse verwendet werden!
+    \ifthenelse{\equal{\MyStrLen}{2}}%
+    {\StrChar{#1}{1}.\,\StrChar{#1}{2}.}%
+    {\ifthenelse{\equal{\MyStrLen}{3}}%
+	{\StrChar{#1}{1}.\,\StrChar{#1}{2}.\,\StrChar{#1}{3}.}%
+	{\textbf{#1}}%
+    }%
+}
+%
+%--------------------
+%
+%Wenn das Label mit sec: beginnt, wird auf einen Abschnitt verwiesen, sonst auf eine Seite. benötigt substr
+\newcommand{\siehe}[1]{%
+    \IfSubStr{#1}{sec:}%
+	{siehe Abschnitt \ref{#1}.}%
+	{\ifthenelse{\getpagerefnumber{#1}>\thepage}{s.\,u.~S.\,\pageref{#1}.}{s.\,o.~S.\,\pageref{#1}.}}
+}
+
+\newcommand{\Siehe}[1]{%
+    \IfSubStr{#1}{sec:}%
+	{Siehe Abschnitt \ref{#1}.}%
+	{\ifthenelse{\getpagerefnumber{#1}>\thepage}{S.\,u.~S.\,\pageref{#1}.}{S.\,o.~S.\,\pageref{#1}.}}
+}
+%
+%--------------------
+%
+\newcommand{\versnr}[1]{\raisebox{1ex}{{\tiny#1}}\kern -.125em}
+
+\newsavebox{\boxbibelstelle}
+\newenvironment{bibelzitat}[1][]
+     {\small\itshape\sbox{\boxbibelstelle}{#1}
+     \begin{quote}\singlespacing}
+     {\hspace*{\fill}\usebox{\boxbibelstelle}\end{quote}}
+
+\newsavebox{\boxlangzitat}
+\newenvironment{langzitat}[1][]
+     {\small%\itshape
+     \sbox{\boxlangzitat}{#1}
+     \vspace{-4ex}%Teständerung!
+     \begin{quotation}\singlespacing}%\vspace{-3ex}}%neg. vspace, da sonst das Zitat zu weit unten beginnt. Zickt!
+     {\hspace*{\fill}\usebox{\boxlangzitat}\end{quotation}
+     \vspace{-1ex}
+     }
+
+\newcommand{\bibel}{\pbibleverse} %aus bibleref-parse -> \bibel{Joh 3,16}
+%
+%--------------------
+%
+%Silbentrennung auf Seitenwechsel verbieten
+%\brokenpenalty=1000
+% Keine "Schusterjungen"
+\clubpenalty = 10000
+% Keine "Hurenkinder"
+\widowpenalty = 10000 
+\displaywidowpenalty = 10000
+%
+%--------------------
+%
+\ifxetex %XeLaTeX--------------------
+    \newcommand{\lat}[1]{\emph{\textlatin{#1}}\hspace{.05em}}
+    \newcommand{\zit}[1]{{\textit{"`#1"'}\hspace{.1em}}} %dt Anführungszeichen und italic mit kleinem Zwischenraum danach
+    \newcommand{\zn}[1]{"`#1"'} %dt Anführungszeichen 
+    \newcommand{\znn}[1]{‚{#1}‘} %dt einfache Anführungszeichen
+\else %pdfLaTeX--------------------
+    \newcommand{\lat}[2][ngerman]{\foreignlanguage{#1}{\emph{#2}\hspace{.05em}}}
+    \newcommand{\zit}[1]{{\textit{\glqq#1\grqq}\hspace{.1em}}} %dt Anführungszeichen und italic mit kleinem Zwischenraum danach
+    \newcommand{\zn}[2][ngerman]{\glqq{\foreignlanguage{#1}{#2}}\grqq} %dt Anführungszeichen 
+    \newcommand{\znn}[2][ngerman]{\glq{\foreignlanguage{#1}{#2}}\grq} %dt einfache Anführungszeichen
+\fi
+%
+%--------------------
+%
+\newcommand{\name}[1]{\textsc{#1}}
+
+\newcommand{\URL}[2]{%
+{\textsc{url:} \url{#1} (abgerufen am #2)}
+}
+%
+%--------------------
+%
+\newcommand{\RU}{R\kern-.07emU}%Religionsunterricht}
+\newcommand{\SuS}{S\kern-.05emu\kern-.05emS}
+
+\newcommand{\GD}{Gottesdienst}
+\newcommand{\AM}{Abendmahl}
+\newcommand{\KU}{Konfirmandenunterricht}
+\newcommand{\KA}{Konfirmandenarbeit}
+\newcommand{\Ko}{Konfirmation}
+\newcommand{\Konfis}{\gender{Konfirmandinnen()Konfirmanden}}
+
+\newcommand{\rkK}[1][]{rö"-misch"=ka"-tho"-lische#1 Kirche}
+
+\newcommand{\Gem}{Gemeinde}
+
+\newcommand{\JC}{Jesus Christus}
+\newcommand{\Pls}{Paulus}
+
+\newcommand{\HKST}{Hei"-lig"-kreuz"-stei"-nach}
+\newcommand{\BB}{Brom"-bach}
+\newcommand{\HB}{Hed"-des"-bach}
+
+\newcommand{\BW}{Ba"-den"=Württem"-berg}
+
+\newcommand{\Lra}{$\Longrightarrow$}
+\newcommand{\Ra}{$\Rightarrow$}
+
+\newcommand{\jedejeder}{\gender{jede()jeder}}
+\newcommand{\jedejeden}{\gender{jede()jeden}}
+\newcommand{\jederjedes}{\gender{jeder()jedes}}
+\newcommand{\jederjedem}{\gender{jeder()jedem}}
+
+%
+%--------------------
+%
+%Fußnotenanpassung
+\deffootnote{2.5em}% Einzug des Fußnotentextes samt Fußnotenziffer
+{1em}% zusätzlicher Absatzeinzug in der Fußnote
+{\makebox[2em]% Raum für Fußnotenzeichen: ebenso groß wie Einzug des FN-Textes
+[r]% Ausrichtung des Fußnotenzeichens: [r]echts, [l]inks
+{\thefootnotemark}%
+\hspace{1em}% Abstand zw. FN-Zeichen und FN-Text}%
+}
+%
+%--------------------
+%
+\newcommand{\pfeil}[1]{% ACHTUNG: kein Fehler angezeigt, bei fehlerhafter Eingabe
+\IfStrEq{#1}{->}{$\rightarrow$}{\relax}%
+\IfStrEq{#1}{-->}{$\longrightarrow$}{\relax}%
+\IfStrEq{#1}{=>}{$\Rightarrow$}{\relax}%
+\IfStrEq{#1}{==>}{$\Longrightarrow$}{\relax}%
+\IfStrEq{#1}{<-}{$\leftarrow$}{\relax}%
+\IfStrEq{#1}{<--}{$\longleftarrow$}{\relax}%
+\IfStrEq{#1}{<=}{$\Leftarrow$}{\relax}%
+\IfStrEq{#1}{<==}{$\Leftarrow$}{\relax}%
+\IfStrEq{#1}{<->}{$\leftrightarrow$}{\relax}%
+\IfStrEq{#1}{<-->}{$\longleftrightarrow$}{\relax}%
+\IfStrEq{#1}{<=>}{$\Leftrightarrow$}{\relax}%
+\IfStrEq{#1}{<==>}{$\Longleftrightarrow$}{\relax}%
+}
