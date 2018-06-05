@@ -57,20 +57,23 @@
 % Keine "Schusterjungen"
 \clubpenalty = 10000
 % Keine "Hurenkinder"
-\widowpenalty = 10000 
+\widowpenalty = 10000
 \displaywidowpenalty = 10000
 %
 %--------------------
 %
 \ifxetex %XeLaTeX--------------------
     \newcommand{\lat}[1]{\emph{\textlatin{#1}}\hspace{.05em}}
-    \newcommand{\zit}[1]{{\textit{"`#1"'}\hspace{.1em}}} %dt Anführungszeichen und italic mit kleinem Zwischenraum danach
-    \newcommand{\zn}[1]{"`#1"'} %dt Anführungszeichen 
-    \newcommand{\znn}[1]{‚{#1}‘} %dt einfache Anführungszeichen
+    \newcommand{\zit}[1]{\emph{\enquote{#1}}}
+    \newcommand{\zn}[1]{\enquote{#1}}
+    \newcommand{\znn}[1]{\enquote*{#1}}
+    %\newcommand{\zit}[1]{{\textit{"`#1"'}\hspace{.1em}}} %dt Anführungszeichen und italic mit kleinem Zwischenraum danach
+    %\newcommand{\zn}[1]{"`#1"'} %dt Anführungszeichen
+    %\newcommand{\znn}[1]{‚{#1}‘} %dt einfache Anführungszeichen
 \else %pdfLaTeX--------------------
     \newcommand{\lat}[2][ngerman]{\foreignlanguage{#1}{\emph{#2}\hspace{.05em}}}
     \newcommand{\zit}[1]{{\textit{\glqq#1\grqq}\hspace{.1em}}} %dt Anführungszeichen und italic mit kleinem Zwischenraum danach
-    \newcommand{\zn}[2][ngerman]{\glqq{\foreignlanguage{#1}{#2}}\grqq} %dt Anführungszeichen 
+    \newcommand{\zn}[2][ngerman]{\glqq{\foreignlanguage{#1}{#2}}\grqq} %dt Anführungszeichen
     \newcommand{\znn}[2][ngerman]{\glq{\foreignlanguage{#1}{#2}}\grq} %dt einfache Anführungszeichen
 \fi
 %
